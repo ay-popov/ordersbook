@@ -1,3 +1,4 @@
+
 <html>
   <head>
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
@@ -14,7 +15,11 @@
       <div class="row">
         <div class="col">
 
-          <h3>Создать наряд</h3>
+            {% if order.id %}
+                <h3>Редактировать наряд</h3>
+            {% else %}
+                <h3>Создать наряд</h3>
+            {% endif %}
 
           <form method="post">
             {% csrf_token %}
@@ -25,8 +30,13 @@
                   Назад к списку
               </a>
               <button class="btn btn-success" type="submit">
-                  Создать
+                  {% if order.id %}
+                      Редактировать
+                  {% else %}
+                      Создать
+                  {% endif %}
               </button>
+
           </form>
         </div>
       </div>

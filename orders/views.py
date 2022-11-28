@@ -106,7 +106,7 @@ def eq_page(request: HttpRequest):
             Equipment
             .objects
             .all()
-        ),
+        )
     }
     return render(request=request, template_name="orders/equipment.html", context=context)
 
@@ -131,6 +131,16 @@ class OrdersUpdateView(UpdateView):
 
 # Создание оборудования
 class EqCreateView(CreateView):
+    model = Equipment
+    form_class = EqCreateForm
+
+    def get_success_url(self):
+        return reverse("orders:eq")
+
+
+# Редактирование данных оборудования
+class EqUpdateView(UpdateView):
+
     model = Equipment
     form_class = EqCreateForm
 

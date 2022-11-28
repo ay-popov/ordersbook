@@ -6,7 +6,11 @@
 
 {% block body %}
 
-   <h4>Создать оборудование</h4>
+    {% if equipment.id %}
+        <h3>Редактировать оборудование</h3>
+    {% else %}
+        <h3>Создать оборудование</h3>
+    {% endif %}
 
   <form method="post">
     {% csrf_token %}
@@ -16,10 +20,14 @@
               href="{% url 'orders:eq' %}">
           Назад к списку
       </a>
-          <button class="btn btn-success" type="submit">
+      <button class="btn btn-success" type="submit">
+          {% if equipment.id %}
+              Редактировать
+          {% else %}
               Создать
-          </button>
+          {% endif %}
+      </button>
 
-    </form>
+  </form>
 
 {% endblock %}

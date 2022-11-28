@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import (OrdersCreateView, eq_page, OrdersByDateListView, MyOrdersListView, OrderCompleteView,
-                    EqCreateView, OrdersUpdateView)
+                    EqCreateView, OrdersUpdateView, EqUpdateView)
 
 app_name = "orders"
 
@@ -27,4 +27,6 @@ urlpatterns = [
     # Создание оборудования
     path("eq/create/", EqCreateView.as_view(), name="create-eq"),
 
+    # Редактирование оборудования
+    path("eq/update/<int:pk>", EqUpdateView.as_view(), name="update-eq"),
 ]
