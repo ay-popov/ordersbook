@@ -1,0 +1,44 @@
+{% extends "employees/base.html" %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+
+    {% if user.is_authenticated %}
+
+        {% if params.group_name == 'Рабочий персонал' or params.group_name == 'Руководство' %}
+
+            {% for employee in employee %}
+
+                <h4>Сотрудник: {{ employee.surname }} {{ employee.firstname }} {{ employee.patronymic }}</h4>
+                <div class="p-4">
+
+                    <b><p>Табельный номер:</b> {{ employee.personnel_number }} </p>
+                    <b><p>Email:</b> {{ employee.email }} </p>
+                    <b><p>Должность:</b> {{ employee.job }} </p>
+
+                    <BR>
+                    <b><p>Пользователь:</b> {{ user }} </p>
+                    <b><p>Группа доступа:</b> {{ params.group_name }} </p>
+
+                </div>
+            {% endfor %}
+
+        {% endif %}
+
+        {% if params.group_name  == 'Рабочий персонал' %}
+            <div class="">
+                <a class="btn btn-sm btn-outline-danger"
+                   href="{% url 'orders:my_orders' %}">Мои наряды</a>
+            </div>
+        {% endif %}
+
+        {% if perms.auth.add_user %}
+            Администратор
+        {% endif %}
+
+    {% endif %}
+
+{% endblock %}

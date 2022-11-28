@@ -1,0 +1,182 @@
+{% extends "employees/base.html" %}
+
+{% block title %}
+    Наряды
+{% endblock %}
+
+{% block body %}
+
+
+    <div class="glyphicon-align-left">
+        <Table>
+            <tr>
+                <td valign="top">
+                    <div id="datepicker"></div>
+                    <input type="hidden" id="datepicker_value" value="01.08.2019">
+                    <script>
+
+                        function GetParams(param) {
+                            var params = window
+                                .location
+                                .search
+                                .replace('?', '')
+                                .split('&')
+                                .reduce(
+                                    function (p, e) {
+                                        var a = e.split('=');
+                                        p[decodeURIComponent(a[0])] = decodeURIComponent(a[1]);
+                                        return p;
+                                    },
+                                    {}
+                                );
+                        }
+
+
+                        $(document).ready(function () {
+                            $('[data-toggle="tooltip"]').tooltip();
+                        });
+
+
+                        $(function () {
+                            $("#datepicker").datepicker({
+                                dateFormat: 'yyyy-mm-dd',
+                                toggleSelected: true,
+                                onSelect: function (date) {
+                                    $('#datepicker_value').val(date);
+                                    {
+                                        location.href = "http://127.0.0.1:8000/orders/"
+                                            + "?date=" + date + "&devision=" + document.getElementById("devision_list").selectedIndex
+                                    }
+                                }
+                            });
+
+                        });
+
+
+                        function myFunction() {
+                            let current_date = new Date();
+                            let Cur_Date;
+
+                            localStorage.mySettings = document.getElementById("devision_list").selectedIndex;
+
+                            let params = (new URL(document.location)).searchParams;
+
+
+                            if (params.get("date") == null) {
+                                day = current_date.getDate();
+                                month = current_date.getMonth() + 1;
+                                year = current_date.getFullYear();
+                                Cur_Date = year + "-" + month + "-" + day;
+
+                            } else {
+                                Cur_Date = params.get("date")
+                            }
+
+                            location.href = "http://127.0.0.1:8000/orders/"
+                                + "?date=" + Cur_Date + "&devision=" + document.getElementById("devision_list").selectedIndex;
+                        }
+
+                    </script>
+
+                    <br>
+                    Участок:
+                    <p>
+                        <select id="devision_list" onchange=myFunction()>
+
+                            {% for dev in devisions %}
+
+                                {% if dev.id != params.dev_id %}
+                                    <option> {{ dev.name }} </option>
+                                {% endif %}
+
+                                {% if dev.id == params.dev_id %}
+                                    <option selected> {{ dev.name }} </option>
+                                {% endif %}
+
+
+                            {% endfor %}
+
+                        </select>
+
+                        <BR>
+
+                        {% if perms.orders.create_order %}
+                            <div class="my-2">
+                                <a class="btn btn-outline-info"
+                                   href="{% url 'orders:create-order' %}"
+                                > Новый наряд </a>
+                            </div>
+                        {% endif %}
+
+
+                </td>
+                <td width="20">
+                </td>
+                <td valign="top">
+
+                    <h4>Наряды {{ params.ord_date }}</h4>
+
+
+                    <div class="container">
+
+                        {% for order in orders %}
+
+                            <div class="row justify-content-between border-bottom border-end border-start border-secondary border-opacity-50">
+
+                                <div class="col-9 my-2">
+                                    Участок: <b> {{ order.devision.name }}</b>
+                                    <BR>
+                                    Наряд: <b> {{ order.name }}</b>
+                                    <BR>
+
+                                    <div type="button" data-bs-html="true" data-toggle="tooltip"
+                                         data-bs-placement="bottom" title="{{ order.equipment.get_parents }}">
+                                        Оборудование: <b><u> {{ order.equipment }}</div>
+                                    </u></b>
+
+                                    </a>
+
+
+                                </div>
+
+
+                                {% if order.status == 0 %}
+                                    <div class="col my-2">
+                                        <a class="btn btn-sm btn-outline-info"
+                                           href="{% url 'orders:update-order' order.pk %}">Редактировать</a>
+
+                                        <div class="my-2">
+
+                                            <a class="btn btn-sm btn-outline-info"
+                                               href="{% url 'orders:complete-order' order.pk %}">Завершить</a>
+
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="col my-2">
+                                        <h6><b><p class="text-success"> Завершено </p></b></h6>
+                                    </div>
+                                {% endif %}
+
+
+                                <div class="my-2">
+                                    {% for name in order.worker.all %}
+
+                                        {{ name }}
+                                        <BR>
+                                    {% endfor %}
+                                </div>
+
+                            </div>
+
+                        {% endfor %}
+                    </div>
+
+
+                    <BR>
+                </td>
+            </tr>
+        </Table>
+    </div>
+
+{% endblock %}

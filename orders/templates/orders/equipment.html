@@ -1,0 +1,43 @@
+{% extends "employees/base.html" %}
+
+{% block title %}
+    Оборудование
+{% endblock %}
+
+{% block body %}
+    {% load mptt_tags %}
+    <ul class="tree">
+        {% recursetree equipments %}
+            <li>
+                {% if  node.techcode == None %}
+                    {{ node.name }}
+                {% else %}
+                    {{ node.name }}   &nbsp({{ node.techcode }})
+                {% endif %}
+
+                {% if not node.is_leaf_node %}
+                    <ul class="children">
+                        {{ children }}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endrecursetree %}
+    </ul>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+
+                <div class="my-2">
+                    <a class="btn btn-outline-info"
+                       href="{% url 'orders:create-eq' %}"
+                    > Новое оборудование </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+

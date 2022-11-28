@@ -1,0 +1,22 @@
+{% extends 'employees/base.html' %}
+
+{% block title %}
+    Завершить наряд
+{% endblock %}
+
+{% block body %}
+
+    <form method="post">{% csrf_token %}
+        <b><p>Вы действительно хотите завершить наряд? </p></b>
+        <b><p>{{ order.name }} </p></b>
+        {{ form }}
+        <a
+                class="btn btn-secondary"
+                href="{% url 'orders:by-date' %}">
+            Назад к списку
+        </a>
+        <button class="btn btn-danger" type="submit">
+            Завершить
+        </button>
+    </form>
+{% endblock %}

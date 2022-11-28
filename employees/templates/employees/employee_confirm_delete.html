@@ -1,0 +1,24 @@
+{% extends 'employees/base.html' %}
+
+{% block title %}
+  Удаление сотрудника
+{% endblock %}
+
+{% block body %}
+
+    <form method="post">{% csrf_token %}
+        <b><p>Вы действительно хотите удалить сотрудника? </p></b>
+        <b><p>{{ employee.surname }} {{ employee.firstname }} {{ employee.patronymic }} (таб.
+            номер {{ employee.personnel_number }})</p></b>
+        {{ form }}
+        <a
+                class="btn btn-secondary"
+                href="{% url 'employees:index' %}">
+            Назад к списку
+        </a>
+        <button class="btn btn-danger" type="submit">
+            Удалить
+        </button>
+    </form>
+
+{% endblock %}

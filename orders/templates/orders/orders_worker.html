@@ -1,0 +1,46 @@
+{% extends "employees/base.html" %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+
+    <h3>Мои наряды</h3>
+    <div class="container">
+        {% for order in orders %}
+
+            <div class="row justify-content-end border-bottom border-end border-start border-secondary border-opacity-50 w-50">
+
+                <div class="col-9 my-2 ">
+
+                    <b> {{ order.order_date|date:"d.m.Y"|default_if_none:'-' }}</b>
+                    <br>
+                    Участок: <b> {{ order.devision.name }}</b>
+                    <BR>
+                    Наряд: <b> {{ order.name }}</b>
+                    <BR>
+                    Оборудование: <b>{{ order.equipment.get_parents }}</b>
+                    <BR>
+                    <div class="my-2">
+                        {% for name in order.worker.all %}
+                            {{ name }}
+                            <BR>
+                        {% endfor %}
+                    </div>
+
+                </div>
+
+                <div class="col my-2 ">
+                    {% if order.status == 0 %}
+                        <h5><b><p class="text-info"> В работе </p></b></h5>
+                    {% else %}
+                        <h5><b><p class="text-success"> Завершено </p></b></h5>
+                    {% endif %}
+                </div>
+
+            </div>
+
+        {% endfor %}
+    </div>
+{% endblock %}

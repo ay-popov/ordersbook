@@ -1,0 +1,25 @@
+{% extends 'employees/base.html' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+
+   <h4>Создать оборудование</h4>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+      <a class="btn btn-secondary"
+              href="{% url 'orders:eq' %}">
+          Назад к списку
+      </a>
+          <button class="btn btn-success" type="submit">
+              Создать
+          </button>
+
+    </form>
+
+{% endblock %}
