@@ -6,8 +6,8 @@ from .forms import EmployeeCreateForm
 from django.views.generic import ListView, DetailView, DeleteView, CreateView, UpdateView
 
 
+# Список сотрудников
 class EmployeesListView(ListView):
-
     template_name = "employees/index.html"
     context_object_name = "employees"
 
@@ -15,15 +15,17 @@ class EmployeesListView(ListView):
         Employee.objects
         .select_related("job")
         .order_by('surname').all()
-        )
+    )
 
 
+# Карточка сотрудника
 class EmployeeDetailView(DetailView):
     template_name = "employees/details.html"
     context_object_name = "employee"
     queryset = (Employee.objects.select_related("job"))
 
 
+# Удаление сотрудника
 class EmployeeDeleteView(DeleteView):
     model = Employee
     success_url = reverse_lazy("employees:index")
@@ -36,6 +38,7 @@ class EmployeeDeleteView(DeleteView):
         return HttpResponseRedirect(success_url)
 
 
+# Создание сотрудника
 class EmployeeCreateView(CreateView):
 
     model = Employee
@@ -45,6 +48,7 @@ class EmployeeCreateView(CreateView):
         return reverse("employees:details", kwargs={"pk": self.object.pk})
 
 
+# Редактирование данных сотрудника
 class EmployeeUpdateView(UpdateView):
 
     model = Employee

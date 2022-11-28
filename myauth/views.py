@@ -9,6 +9,7 @@ from django.http import HttpRequest
 from employees.models import Employee
 
 
+# Страница после авторизации
 def MeView(request: HttpRequest):
     def group_name(request):
         if request.user.groups.filter(name='workers').exists():

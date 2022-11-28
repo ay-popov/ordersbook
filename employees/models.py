@@ -2,6 +2,7 @@ from django.contrib.auth.models import User, Group
 from django.db import models
 
 
+# Должность сотрудника
 class JobTitles(models.Model):
     name = models.CharField(max_length=64)
 
@@ -9,6 +10,7 @@ class JobTitles(models.Model):
         return self.name
 
 
+# Модель сотрудника
 class Employee(models.Model):
     surname = models.CharField(max_length=64, null=False)
     firstname = models.CharField(max_length=64, null=False)

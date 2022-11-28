@@ -11,6 +11,7 @@ from .forms import OrderCreateForm, EqCreateForm
 from django.shortcuts import render
 
 
+# Завершение наряда
 class OrderCompleteView(DeleteView):
     model = Order
     success_url = reverse_lazy("orders:by-date")
@@ -23,6 +24,7 @@ class OrderCompleteView(DeleteView):
         return HttpResponseRedirect(success_url)
 
 
+# Список нарядов "Мои наряды" для рабочего
 def MyOrdersListView(request: HttpRequest):
 
     context = {
@@ -38,6 +40,7 @@ def MyOrdersListView(request: HttpRequest):
     return render(request=request, template_name="orders/orders_worker.html", context=context)
 
 
+# Список нарядов на выбранную дату
 def OrdersByDateListView(request: HttpRequest):
 
     orders_date = request.GET.get("date")
@@ -96,12 +99,7 @@ def OrdersByDateListView(request: HttpRequest):
     return render(request=request, template_name="orders/index.html", context=context)
 
 
-class EquipmentDetailView(DetailView):
-    template_name = "equipment.html"
-    context_object_name = "Equipment"
-    queryset = (Equipment.objects.all())
-
-
+# Список оборудования
 def eq_page(request: HttpRequest):
     context = {
         "equipments": (
@@ -113,6 +111,7 @@ def eq_page(request: HttpRequest):
     return render(request=request, template_name="orders/equipment.html", context=context)
 
 
+# Создание наряда
 class OrdersCreateView(CreateView):
     model = Order
     form_class = OrderCreateForm
@@ -121,6 +120,7 @@ class OrdersCreateView(CreateView):
         return reverse("orders:by-date")
 
 
+# Изменение наряда
 class OrdersUpdateView(UpdateView):
     model = Order
     form_class = OrderCreateForm
@@ -129,9 +129,16 @@ class OrdersUpdateView(UpdateView):
         return reverse("orders:by-date")
 
 
+# Создание оборудования
 class EqCreateView(CreateView):
     model = Equipment
     form_class = EqCreateForm
 
     def get_success_url(self):
         return reverse("orders:eq")
+
+
+class EquipmentDetailView(DetailView):
+    template_name = "equipment.html"
+    context_object_name = "Equipment"
+    queryset = (Equipment.objects.all())

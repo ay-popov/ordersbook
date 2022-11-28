@@ -3,6 +3,7 @@ from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
 
 
+# Участок выполнения наряда
 class Devision(models.Model):
     name = models.CharField(max_length=64, null=False)
 
@@ -10,6 +11,7 @@ class Devision(models.Model):
         return self.name
 
 
+# Модель оборудования
 class Equipment(MPTTModel):
     class Meta:
         ordering = ('tree_id', 'level')
@@ -44,6 +46,7 @@ class Equipment(MPTTModel):
 mptt.register(Equipment, order_insertion_by=['name'])
 
 
+# Модель наряда
 class Order(models.Model):
     name = models.CharField(max_length=64, null=False, verbose_name="Наименование работы")
     worker = models.ManyToManyField("employees.employee", related_name="orders", verbose_name="Рабочие")
